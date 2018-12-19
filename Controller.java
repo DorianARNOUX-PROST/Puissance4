@@ -28,7 +28,7 @@ public class Controller {
 						System.out.println("Entre une valeur entre 0 et 6 capitaine");
 					}
 					else {
-						if(!grid.play(column, count%2+1)) {
+						if(!grid.play(column, count)) {
 							System.out.println("La colonne est déjà pleine, rentre un autre entier");
 						}
 						else nonEntier = false;
@@ -38,6 +38,11 @@ public class Controller {
 					scan = new Scanner(System.in);
 				}
 				
+			}
+			if(grid.hasWon(count)) {
+				System.out.println("Bravo pirate " + count + " tu as gagné!");
+				console.afficher(grid);
+				won = true;
 			}
 		}
 		scan.close();
