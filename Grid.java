@@ -37,7 +37,7 @@ public class Grid {
 		boolean quit = false;
 		boolean res = false;
 		
-		// On vÈrifie la colonne
+		// On v√©rifie la colonne
 		if(lastPlayedY >= 3) {
 			for(int i = lastPlayedY-1; (i >= lastPlayedY-3) && !quit; i--) {
 				
@@ -55,7 +55,7 @@ public class Grid {
 			res = true;
 		}
 		else {
-			// On vÈrifie la ligne ‡ droite
+			// On v√©rifie la ligne √† droite
 			for(int i = lastPlayedX+1; (i < nbColonne) && !quit; i++) {
 				if(tabGrille[lastPlayedY][i].getValeur() == joueur) {
 					l++;
@@ -65,7 +65,7 @@ public class Grid {
 				}
 			}
 			quit = false;
-			// On vÈrifie la ligne ‡ gauche
+			// On v√©rifie la ligne √† gauche
 			for(int i = lastPlayedX-1; (i >= 0) && !quit; i--) {
 				if(tabGrille[lastPlayedY][i].getValeur() == joueur) {
 					l++;
@@ -80,16 +80,55 @@ public class Grid {
 				res = true;
 			}
 			else {
-				// On vÈrifie la premiËre diagonale
-				for(int i = lastPlayedX-1; (i >= 0) && !quit; i--) {
-					if(tabGrille[lastPlayedY][i].getValeur() == joueur) {
-						l++;
+				// On v√©rifie la premi√®re diagonale
+				int baseY = lastPlayedY - 1;
+				for(int i = lastPlayedX-1; (baseY >= 0) && (i >= 0) && !quit; i--, baseY--) {
+					if(tabGrille[baseY][i].getValeur() == joueur) {
+						d1++;
 					}
 					else {
 						quit = true;
 					}
 				}
 				quit = false;
+				baseY = lastPlayedY + 1;
+				for(int i = lastPlayedX+1; (baseY < nbColonne) && (i < nbColonne) && !quit; i++, baseY++) {
+					if(tabGrille[baseY][i].getValeur() == joueur) {
+						d1++;
+					}
+					else {
+						quit = true;
+					}
+				}
+				if(d1 >= 4) {
+					res = true;
+				}
+				else {
+					// On v√©rifie la deuxi√®me diagonale
+					baseY = lastPlayedY + 1;
+					quit = false;
+					for(int i = lastPlayedX-1; (baseY < nbColonne) && (i >= 0) && !quit; i--, baseY++) {
+						if(tabGrille[baseY][i].getValeur() == joueur) {
+							d2++;
+						}
+						else {
+							quit = true;
+						}
+					}
+					quit = false;
+					baseY = lastPlayedY - 1;
+					for(int i = lastPlayedX+1; (baseY >= 0) && (i < nbColonne) && !quit; i++, baseY--) {
+						if(tabGrille[baseY][i].getValeur() == joueur) {
+							d2++;
+						}
+						else {
+							quit = true;
+						}
+					}
+					if(d2 >= 4) {
+						res = true;
+					}
+				}
 			}
 		}
 		

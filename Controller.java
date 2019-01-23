@@ -13,23 +13,24 @@ public class Controller {
 
 	public void game() {
 		boolean won = false;
-		int count = 0;
+		int count = 0, play = 0;
 		Scanner scan = new Scanner(System.in);
 		int column;
 		while (!won) {
 			console.afficher(grid);
+			play ++;
 			count = (count) % 2 + 1;
-			System.out.println("Pirate numÈro " + count + ", choisis ta colonne (0 ‡ 6)");
+			System.out.println("Pirate num√©ro " + count + ", choisis ta colonne (1 √† 7)");
 			boolean nonEntier = true;
 			while(nonEntier) {
 				try {
-					column = scan.nextInt();
+					column = scan.nextInt() - 1;
 					if (column < 0 || column > 6) {
-						System.out.println("Entre une valeur entre 0 et 6 capitaine");
+						System.out.println("Entre une valeur entre 1 et 7 capitaine");
 					}
 					else {
 						if(!grid.play(column, count)) {
-							System.out.println("La colonne est dÈj‡ pleine, rentre un autre entier");
+							System.out.println("La colonne est d√©j√† pleine, rentre un autre entier");
 						}
 						else nonEntier = false;
 					}
@@ -39,8 +40,8 @@ public class Controller {
 				}
 				
 			}
-			if(grid.hasWon(count)) {
-				System.out.println("Bravo pirate " + count + " tu as gagnÈ!");
+			if(play > 7 && grid.hasWon(count)) {
+				System.out.println("Bravo pirate " + count + " tu as gagn√©!");
 				console.afficher(grid);
 				won = true;
 			}
