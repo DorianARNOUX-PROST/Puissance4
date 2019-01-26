@@ -1,9 +1,12 @@
-public class Grid {
+import java.util.Observable;
+
+public class Grid{
 	
 	private int nbLigne, nbColonne;
 	private Slot[][] tabGrille;
 	private int lastPlayedX;
 	private int lastPlayedY;
+	private int alignement;
 	
 	public Grid() {
 		this.nbLigne = 6;
@@ -16,6 +19,53 @@ public class Grid {
 		}
 		this.lastPlayedX = 0;
 		this.lastPlayedY = 0;
+		this.alignement = 4;
+	}
+	
+	public Grid(Grid grille) {
+
+		this.nbLigne=grille.getNbLigne();
+		this.nbColonne=grille.getNbColonne();
+		this.alignement=grille.getAlignement();
+		this.lastPlayedX=grille.getLastPlayedX();
+		this.lastPlayedY=grille.getLastPlayedY();
+		this.tabGrille = new Slot[nbLigne][nbColonne];
+		for (int i = 0; i < this.nbLigne; i++) {
+			for (int j = 0; j < this.nbColonne; j++) {
+				this.tabGrille[i][j] = new Slot(grille.getSlot(i,j).getValeur());
+			}
+		}
+	}
+	
+	public int getLastPlayedX() {
+		return lastPlayedX;
+	}
+
+	public void setLastPlayedX(int lastPlayedX) {
+		this.lastPlayedX = lastPlayedX;
+	}
+
+	public int getLastPlayedY() {
+		return lastPlayedY;
+	}
+
+	public void setLastPlayedY(int lastPlayedY) {
+		this.lastPlayedY = lastPlayedY;
+	}
+
+	public Grid (int nbColonne, int nbLigne,int alignement) {
+		this.nbLigne = nbLigne;
+		this.nbColonne = nbColonne;
+		this.alignement = alignement;
+		tabGrille = new Slot[nbLigne][nbColonne];
+		for (int i = 0; i < nbLigne; i++) {
+			for (int j = 0; j < nbColonne; j++) {
+				tabGrille[i][j] = new Slot(0);
+			}
+		}
+		this.lastPlayedX = 0;
+		this.lastPlayedY = 0;
+		
 	}
 	
 	public boolean play(int column, int joueur) {
@@ -38,8 +88,8 @@ public class Grid {
 		boolean res = false;
 		
 		// On vérifie la colonne
-		if(lastPlayedY >= 3) {
-			for(int i = lastPlayedY-1; (i >= lastPlayedY-3) && !quit; i--) {
+		if(lastPlayedY >= alignement-1) {
+			for(int i = lastPlayedY-1; i >= 0 && !quit; i--) {
 				
 				if(tabGrille[i][lastPlayedX].getValeur() == joueur) {
 					c++;
@@ -51,7 +101,7 @@ public class Grid {
 			quit = false;
 		}
 		
-		if(c == 4) {
+		if(c >= alignement) {
 			res = true;
 		}
 		else {
@@ -76,7 +126,7 @@ public class Grid {
 			}
 			quit = false;
 			
-			if(l >= 4) {
+			if(l >= alignement) {
 				res = true;
 			}
 			else {
@@ -92,7 +142,7 @@ public class Grid {
 				}
 				quit = false;
 				baseY = lastPlayedY + 1;
-				for(int i = lastPlayedX+1; (baseY < nbColonne) && (i < nbColonne) && !quit; i++, baseY++) {
+				for(int i = lastPlayedX+1; (baseY < nbLigne) && (i < nbColonne) && !quit; i++, baseY++) {
 					if(tabGrille[baseY][i].getValeur() == joueur) {
 						d1++;
 					}
@@ -100,14 +150,14 @@ public class Grid {
 						quit = true;
 					}
 				}
-				if(d1 >= 4) {
+				if(d1 >= alignement) {
 					res = true;
 				}
 				else {
 					// On vérifie la deuxième diagonale
 					baseY = lastPlayedY + 1;
 					quit = false;
-					for(int i = lastPlayedX-1; (baseY < nbColonne) && (i >= 0) && !quit; i--, baseY++) {
+					for(int i = lastPlayedX-1; (baseY < nbLigne) && (i >= 0) && !quit; i--, baseY++) {
 						if(tabGrille[baseY][i].getValeur() == joueur) {
 							d2++;
 						}
@@ -125,7 +175,7 @@ public class Grid {
 							quit = true;
 						}
 					}
-					if(d2 >= 4) {
+					if(d2 >= alignement) {
 						res = true;
 					}
 				}
@@ -133,6 +183,14 @@ public class Grid {
 		}
 		
 		return res;
+	}
+
+	public int getAlignement() {
+		return alignement;
+	}
+
+	public void setAlignement(int alignement) {
+		this.alignement = alignement;
 	}
 
 	public int getNbLigne() {
@@ -157,6 +215,9 @@ public class Grid {
 
 	public void setSlot(Slot slot, int x, int y) {
 		this.tabGrille[x][y] = slot;
+	}
+	public Slot[][] getJeu(){
+		return tabGrille;
 	}
 	
 	
